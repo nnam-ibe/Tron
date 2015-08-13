@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/dialog_show_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingBottom="20dp"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:paddingTop="24dp"
+        android:text="Game of Thrones"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/dialog_show_season"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_show_name"
+        android:paddingBottom="10dp"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:text="Season 10 Episode 14"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/dialog_show_no_episodes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_show_season"
+        android:paddingBottom="10dp"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:text="10 episodes per season"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/dialog_show_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_show_no_episodes"
+        android:paddingBottom="24dp"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:text="MONDAY"
+        android:textSize="20sp" />
+
+</RelativeLayout>

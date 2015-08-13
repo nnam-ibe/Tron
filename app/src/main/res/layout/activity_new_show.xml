@@ -1,0 +1,133 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="show.com.tron.NewShowActivity">
+
+    <LinearLayout
+        android:id="@+id/new_show_top_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/new_show_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_btn"
+            android:onClick="cancelOnclick"
+            android:text="@string/new_show_cancel_button" />
+
+        <Button
+            android:id="@+id/new_show_done"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_btn"
+            android:onClick="doneOnClick"
+            android:text="@string/new_show_create_button" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <EditText
+            android:id="@+id/new_show_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/new_show_field"
+            android:hint="@string/new_show_show_name_hint"
+            android:inputType="text"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/days_spinner"
+            android:layout_width="165dp"
+            android:layout_height="@dimen/new_show_field"
+            android:layout_below="@id/new_show_name"
+            android:entries="@array/days_array"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/new_episode_season"
+            android:layout_width="200dp"
+            android:layout_height="@dimen/new_show_field"
+            android:layout_below="@+id/days_spinner"
+            android:gravity="center_vertical"
+            android:text="@string/new_show_episodes_season"
+            android:textColor="#000000"
+            android:textSize="19sp" />
+
+        <EditText
+            android:id="@+id/new_episode_season_editText"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/new_show_field"
+            android:layout_below="@+id/days_spinner"
+            android:layout_toEndOf="@+id/new_episode_season"
+            android:inputType="number"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/new_season"
+            android:layout_width="200dp"
+            android:layout_height="@dimen/new_show_field"
+            android:layout_below="@+id/new_episode_season"
+            android:gravity="center_vertical"
+            android:text="@string/new_show_season_string"
+            android:textColor="#000000"
+            android:textSize="19sp" />
+
+        <EditText
+            android:id="@+id/new_season_editText"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/new_show_field"
+            android:layout_below="@+id/new_episode_season"
+            android:layout_toEndOf="@+id/new_season"
+            android:inputType="number"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/new_episode"
+            android:layout_width="200dp"
+            android:layout_height="@dimen/new_show_field"
+            android:layout_below="@+id/new_season"
+            android:gravity="center_vertical"
+            android:text="@string/new_show_episode_string"
+            android:textColor="#000000"
+            android:textSize="19sp" />
+
+        <EditText
+            android:id="@+id/new_episode_editText"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/new_show_field"
+            android:layout_below="@+id/new_season"
+            android:layout_toEndOf="@+id/new_season"
+            android:inputType="number"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/new_airing"
+            android:layout_width="200dp"
+            android:layout_height="@dimen/new_show_field"
+            android:layout_below="@+id/new_episode"
+            android:gravity="center_vertical"
+            android:text="@string/new_show_airing_strinf"
+            android:textColor="#000000"
+            android:textSize="19sp" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/new_airing_switch"
+            android:layout_width="150dp"
+            android:layout_height="@dimen/new_show_field"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/new_episode"
+            android:checked="true"
+            android:paddingEnd="20dp" />
+    </RelativeLayout>
+
+</LinearLayout>
