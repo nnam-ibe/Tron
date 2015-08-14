@@ -121,10 +121,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public List<Show> getTodayShows(String today) {
-        Log.e("DBHelper", "Setting up stuf");//TODO
         List<Show> showList = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Log.e("DBHelper", "Into db");//TODO
         Cursor cursor = db.query(SHOW_TABLE,
                 new String[]{SHOW_NAME, SHOW_AIR_DAY, SHOW_NO_EPISODES, SHOW_SEASON, SHOW_EPISODE, SHOW_ID},
                 SHOW_AIR_DAY + "=?", new String[]{today}, null, null, null, null);

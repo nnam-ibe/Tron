@@ -73,9 +73,7 @@ public class FragmentToday extends Fragment {
         super.onResume();
         String today = dayFormat.format(Calendar.getInstance().getTime()).toUpperCase();
         try {
-            Log.e("Fragment Today", "Gotten today " + today + " getting shows.....");//TODO
             List<Show> list = db.getTodayShows(today);
-            Log.e("Fragment Today", "Gotten shows"); //TODO
             if (list != null && !list.isEmpty()) {
                 addShow(list);
             }

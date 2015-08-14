@@ -3,9 +3,10 @@
     xmlns:yourapp="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
     <item
-        android:id="@+id/action_add"
-        android:icon="@drawable/ic_add_black_24dp"
-        android:title="@string/actionbar_add_string"
+        android:id="@+id/search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_action_search"
+        android:title="@string/search"
         yourapp:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_settings"

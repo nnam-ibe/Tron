@@ -57,10 +57,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else if (id == R.id.action_add) {
-            startActivity(new Intent(this, NewShowActivity.class));
         }
-
         return super.onOptionsItemSelected(item);
     }
 
