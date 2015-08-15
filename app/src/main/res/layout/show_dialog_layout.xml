@@ -8,13 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingBottom="20dp"
-        android:paddingEnd="24dp"
-        android:paddingStart="24dp"
-        android:paddingTop="24dp"
+        android:paddingBottom="@dimen/dialog_padding_top_material"
+        android:paddingEnd="@dimen/dialog_padding_material"
+        android:paddingStart="@dimen/dialog_padding_material"
+        android:paddingTop="@dimen/dialog_padding_material"
         android:text="Game of Thrones"
         android:textColor="#000000"
-        android:textSize="30sp" />
+        android:textSize="@dimen/dialog_header_text_size" />
 
     <TextView
         android:id="@+id/dialog_show_season"
@@ -22,10 +22,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/dialog_show_name"
         android:paddingBottom="10dp"
-        android:paddingEnd="24dp"
-        android:paddingStart="24dp"
+        android:paddingEnd="@dimen/dialog_padding_material"
+        android:paddingStart="@dimen/dialog_padding_material"
         android:text="Season 10 Episode 14"
-        android:textSize="20sp" />
+        android:textSize="@dimen/dialog_body_text_size" />
 
     <TextView
         android:id="@+id/dialog_show_no_episodes"
@@ -33,20 +33,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/dialog_show_season"
         android:paddingBottom="10dp"
-        android:paddingEnd="24dp"
-        android:paddingStart="24dp"
+        android:paddingEnd="@dimen/dialog_padding_material"
+        android:paddingStart="@dimen/dialog_padding_material"
         android:text="10 episodes per season"
-        android:textSize="20sp" />
+        android:textSize="@dimen/dialog_body_text_size" />
 
     <TextView
         android:id="@+id/dialog_show_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/dialog_show_no_episodes"
-        android:paddingBottom="24dp"
-        android:paddingEnd="24dp"
-        android:paddingStart="24dp"
+        android:paddingBottom="@dimen/dialog_padding_material"
+        android:paddingEnd="@dimen/dialog_padding_material"
+        android:paddingStart="@dimen/dialog_padding_material"
         android:text="MONDAY"
-        android:textSize="20sp" />
+        android:textSize="@dimen/dialog_body_text_size" />
 
 </RelativeLayout>
