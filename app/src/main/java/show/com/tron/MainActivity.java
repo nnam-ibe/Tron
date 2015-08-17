@@ -3,6 +3,7 @@ package show.com.tron;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -19,7 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText mSearchEt;
     private MenuItem mSearchAction;
     private ListView mSearchLV;
+    private FragmentShow show;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tron = (TronApplication) getApplicationContext();
         db = new DBHelper(this);
+        show = new FragmentShow();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
@@ -84,28 +89,51 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_search) {
-            if (mSearchOpened) {
-                closeSearchBar();
-            } else {
-                openSearchBar(mSearchQuery);
-            }
-            return true;
-        } else if (id == R.id.action_export_shows) {
-            try {
-                DataXmlExporter dxe = new DataXmlExporter(db.getReadableDatabase());
-                Log.e("MainActivity", "Starting to export file");
-                dxe.export("Show_");
-            } catch (IOException e) {
-                Log.e("MainActivity", "Error trying to export file");
-                e.printStackTrace();
-            }
-        }  else if (id == R.id.action_import_shows) {
-
-        } else if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_search:
+                if (mSearchOpened) {
+                    closeSearchBar();
+                } else {
+                    openSearchBar(mSearchQuery);
+                }
+                return true;
+            case R.id.action_export_shows:
+                try {
+                    DataXmlExporter dxe = new DataXmlExporter(db.getReadableDatabase());
+                    toast("File exported to directory /storage/emulated/0/Tron/");
+                    dxe.export("Show_");
+                } catch (IOException e) {
+                    toast("Couldn't export file");
+                    Log.e("MainActivity", "Error trying to export file");
+                    e.printStackTrace();
+                }
+                return true;
+            case R.id.action_import_shows:
+                File mPath = new File(Environment.getExternalStorageDirectory() + "//DIR//");
+                FileDialog fileDialog = new FileDialog(this, mPath);
+                fileDialog.setFileEndsWith(".xml");
+                fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
+                    public void fileSelected(File file) {
+                        try {
+                            List<Show> list = DataXmlImporter.importer(file);
+                            for (Show show : list) {
+                                db.insertShow(show);
+                            }
+                            tron.setNewShow();
+                            show.onResume();
+                            toast("Import successful!!");
+                        } catch (Exception e) {
+                            toast("Import failed, File format bad!!");
+                            Log.e("MainActivity", "Exception trying to import file");
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                fileDialog.showDialog();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-            return super.onOptionsItemSelected(item);
     }
 
     //OnClick for floating action button
@@ -115,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new FragmentShow(), "SHOWS");
+        adapter.addFrag(show, "SHOWS");
         adapter.addFrag(new FragmentToday(), "TODAY");
         viewPager.setAdapter(adapter);
     }
@@ -205,4 +233,8 @@ public class MainActivity extends AppCompatActivity {
 //    private MoviesListAdapter getListAdapter() {
 //        return (MoviesListAdapter) mMoviesLv.getAdapter();
 //    }
+
+    private void toast(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 }
