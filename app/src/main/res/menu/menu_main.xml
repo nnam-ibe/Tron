@@ -3,11 +3,17 @@
     xmlns:yourapp="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
     <item
-        android:id="@+id/search"
+        android:id="@+id/action_search"
         android:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/ic_action_search"
         android:title="@string/search"
         yourapp:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_export_shows"
+        android:title="@string/action_export_shows_string"/>
+    <item
+        android:id="@+id/action_import_shows"
+        android:title="@string/action_import_shows_string"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

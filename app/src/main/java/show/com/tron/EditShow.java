@@ -144,9 +144,6 @@ public class EditShow extends AppCompatActivity {
         } else if (Integer.valueOf(currEpisode.getText().toString()) > Integer.valueOf(epiSeason.getText().toString())) {
             toast("Current episode cannot be greater than episodes in a season");
         } else {
-//             show = new Show(showName.getText().toString(), Day.value(spinner.getSelectedItemPosition()),
-//                    Integer.valueOf(epiSeason.getText().toString()), Integer.valueOf(currSeason.getText().toString()),
-//                    Integer.valueOf(currEpisode.getText().toString()));
             show.setName(showName.getText().toString().trim());
             show.setWeekDay(Day.value(spinner.getSelectedItemPosition()));
             show.setNoOfEpisodes(Integer.valueOf(epiSeason.getText().toString()));

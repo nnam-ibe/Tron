@@ -74,7 +74,7 @@ public class FragmentToday extends Fragment {
         String today = dayFormat.format(Calendar.getInstance().getTime()).toUpperCase();
         try {
             List<Show> list = db.getTodayShows(today);
-            if (list != null && !list.isEmpty()) {
+            if (list != null) {
                 addShow(list);
             }
         } catch (Exception e) {

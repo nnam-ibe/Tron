@@ -33,4 +33,6 @@
     <string name="new_show_cancel_button">CANCEL</string>
     <string name="edit_show_save_button">SAVE</string>
     <string name="search">Search</string>
+    <string name="action_export_shows_string">Export shows to file</string>
+    <string name="action_import_shows_string">Import shows from file</string>
 </resources>

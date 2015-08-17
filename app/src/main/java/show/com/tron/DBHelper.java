@@ -20,14 +20,13 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String SHOW_NO_EPISODES = "no_episodes";
     public static final String SHOW_SEASON = "season";
     public static final String SHOW_EPISODE = "episode";
-    private static final String DATABASE_NAME = "App.db";
+    public static final String DATABASE_NAME = "App.db";
     private static final String SHOW_TABLE_CREATE = "create table "
             + SHOW_TABLE + "(" + SHOW_ID + " integer primary key autoincrement unique, "
             + SHOW_NAME + " text not null, " + SHOW_AIR_DAY + " text not null, " + SHOW_NO_EPISODES
             + " integer not null, " + SHOW_SEASON + " integer not null, " + SHOW_EPISODE
             + " integer not null);";
 
-//    SQLiteDatabase db;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -121,8 +120,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public List<Show> getTodayShows(String today) {
-        List<Show> showList = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
+        List<Show> showList = new ArrayList<>();
+
         Cursor cursor = db.query(SHOW_TABLE,
                 new String[]{SHOW_NAME, SHOW_AIR_DAY, SHOW_NO_EPISODES, SHOW_SEASON, SHOW_EPISODE, SHOW_ID},
                 SHOW_AIR_DAY + "=?", new String[]{today}, null, null, null, null);
@@ -133,6 +133,21 @@ public class DBHelper extends SQLiteOpenHelper {
                     cursor.getInt(cursor.getColumnIndex(SHOW_EPISODE)),
                     cursor.getInt(cursor.getColumnIndex(SHOW_ID)));
             showList.add(show);
+        }
+        return showList;
+    }
+
+    /**
+     * Used to get the all the show names currently in the db
+     * @return List of all show names, empty list of no show.
+     */
+    public List<String> getShowNames(){
+        SQLiteDatabase db = getReadableDatabase();
+        List<String> showList = new ArrayList<>();
+
+        Cursor cursor = db.query(SHOW_TABLE, new String[]{SHOW_NAME}, null, null, null, null, null);
+        while (cursor != null && cursor.moveToNext()) {
+            showList.add(cursor.getString(cursor.getColumnIndex(SHOW_NAME)));
         }
         return showList;
     }
