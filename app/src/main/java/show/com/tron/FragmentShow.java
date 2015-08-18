@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class FragmentShow extends Fragment {
-    private AdapterShow showAdapter;
+    public AdapterShow showAdapter;
     private RecyclerView recyclerView;
     private List<Show> showList = new ArrayList<>();
     private FloatingActionButton fab;

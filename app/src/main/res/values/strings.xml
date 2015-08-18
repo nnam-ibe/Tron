@@ -35,4 +35,5 @@
     <string name="search">Search</string>
     <string name="action_export_shows_string">Export shows to file</string>
     <string name="action_import_shows_string">Import shows from file</string>
+    <string name="searchable_hint">Search for a show</string>
 </resources>

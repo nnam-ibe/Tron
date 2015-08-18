@@ -90,7 +90,6 @@ public class NewShowActivity extends AppCompatActivity {
                     Integer.valueOf(currEpisode.getText().toString()));
             DBHelper dbHelper = new DBHelper(this);
             dbHelper.insertShow(show);
-            tron.setNewShow();
             toast("Show was successfully added");
             finish();
         }

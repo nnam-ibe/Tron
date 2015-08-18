@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.provider.SyncStateContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -80,9 +82,39 @@ public class AdapterShow extends RecyclerView.Adapter<AdapterShow.ShowViewHolder
         });
     }
 
+    public Filter getFilter() {
+        return new Filter() {
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults oReturn = new FilterResults();
+                final ArrayList<Show> results = new ArrayList<>();
+                final List <Show> search = tron.getShowList();
+                if (constraint != null) {
+                        if (search != null && search.size() > 0) {
+                            for (final Show show : search) {
+                                if (show.getName().toLowerCase()
+                                        .contains(constraint.toString()))
+                                    results.add(show);
+                            }
+                        }
+                        oReturn.values = results;
+                }
+                return oReturn;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint,
+                                          FilterResults results) {
+                showList = (ArrayList<Show>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
     /**
      * Method used to get the item in a specific position of the adapter.
-     *
      * @param position positon of the item to retrieve.
      * @return Show object, returns null if IndexOutOfBounds.
      */

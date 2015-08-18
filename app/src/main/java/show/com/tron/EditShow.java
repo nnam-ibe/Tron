@@ -151,7 +151,6 @@ public class EditShow extends AppCompatActivity {
             show.setEpisode(Integer.valueOf(currEpisode.getText().toString()));
             DBHelper dbHelper = new DBHelper(this);
             dbHelper.updateShow(show);
-            tron.setNewShow();
             toast("Show was successfully updated");
             finish();
         }

@@ -1,25 +1,22 @@
 package show.com.tron;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -29,60 +26,71 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TronApplication tron;
-    private List<String> searchList; //List of show names to search against.
-    private List<String> searchFiltered; //List of filtered show names
-    private boolean mSearchOpened; //Search filed opened flag
-    private String mSearchQuery; //Searched text.
     private DBHelper db;
-    private Drawable mIconOpenSearch; //Search bar open icon
-    private Drawable mIconCloseSearch; //Search bar close icon
-    private EditText mSearchEt;
-    private MenuItem mSearchAction;
-    private ListView mSearchLV;
-    private FragmentShow show;
+    private FragmentShow fragmentShow;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tron = (TronApplication) getApplicationContext();
         db = new DBHelper(this);
-        show = new FragmentShow();
+        fragmentShow = new FragmentShow();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.main_viewpager);
+//        final ViewPager viewPager = (ViewPager) findViewById(R.id.main_viewpager);
+        viewPager = (ViewPager) findViewById(R.id.main_viewpager);
         setupViewPager(viewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tablayout);
         tabLayout.setupWithViewPager(viewPager);
 
-        mSearchOpened = false;
-        mSearchQuery = "";
-        mIconOpenSearch = ContextCompat.getDrawable(this, R.drawable.ic_action_search);
-        mIconCloseSearch = ContextCompat.getDrawable(this, R.drawable.ic_action_search_close );
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        MenuItem mItem = menu.findItem(R.id.action_search);
+        MenuItemCompat.setOnActionExpandListener(mItem,new MenuItemCompat.OnActionExpandListener() {
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                if(viewPager.getCurrentItem() != 0) {
+                    viewPager.setCurrentItem(0);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                fragmentShow.showAdapter.getFilter().filter("");
+                return true;
+            }
+        });
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(mItem);
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
+        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String cs) {
+                fragmentShow.showAdapter.getFilter().filter(cs);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                fragmentShow.showAdapter.getFilter().filter(query);
+                return false;
+            }
+        };
+        searchView.setOnQueryTextListener(textChangeListener);
         return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        mSearchAction = menu.findItem(R.id.action_search);
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        searchList = db.getShowNames();
-        searchFiltered = searchList;
     }
 
     @Override
@@ -90,13 +98,6 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_search:
-                if (mSearchOpened) {
-                    closeSearchBar();
-                } else {
-                    openSearchBar(mSearchQuery);
-                }
-                return true;
             case R.id.action_export_shows:
                 try {
                     DataXmlExporter dxe = new DataXmlExporter(db.getReadableDatabase());
@@ -119,8 +120,7 @@ public class MainActivity extends AppCompatActivity {
                             for (Show show : list) {
                                 db.insertShow(show);
                             }
-                            tron.setNewShow();
-                            show.onResume();
+                            fragmentShow.onResume();
                             toast("Import successful!!");
                         } catch (Exception e) {
                             toast("Import failed, File format bad!!");
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(show, "SHOWS");
+        adapter.addFrag(fragmentShow, "SHOWS");
         adapter.addFrag(new FragmentToday(), "TODAY");
         viewPager.setAdapter(adapter);
     }
@@ -177,62 +177,6 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
-
-    private void openSearchBar(String queryText) {
-
-        // Set custom view on action bar.
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(R.layout.search_bar);
-
-        // Search edit text field setup.
-        mSearchEt = (EditText) actionBar.getCustomView()
-                .findViewById(R.id.etSearch);
-        mSearchEt.addTextChangedListener(new SearchWatcher());
-        mSearchEt.setText(queryText);
-        mSearchEt.requestFocus();
-
-        // Change search icon accordingly.
-        mSearchAction.setIcon(mIconCloseSearch);
-        mSearchOpened = true;
-    }
-
-    private void closeSearchBar() {
-        // Remove custom view.
-        getSupportActionBar().setDisplayShowCustomEnabled(false);
-
-        // Change search icon accordingly.
-        mSearchAction.setIcon(mIconOpenSearch);
-        mSearchOpened = false;
-    }
-
-    /**
-     * Responsible for handling changes in search edit text.
-     */
-    private class SearchWatcher implements TextWatcher {
-
-        @Override
-        public void beforeTextChanged(CharSequence c, int i, int i2, int i3) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence c, int i, int i2, int i3) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-//            mSearchQuery = mSearchEt.getText().toString();
-//            searchFiltered = performSearch(searchList, mSearchQuery);
-//            getListAdapter().update(mMoviesFiltered);
-        }
-
-    }
-
-//    private MoviesListAdapter getListAdapter() {
-//        return (MoviesListAdapter) mMoviesLv.getAdapter();
-//    }
 
     private void toast(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

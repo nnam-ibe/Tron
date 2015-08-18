@@ -137,18 +137,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return showList;
     }
 
-    /**
-     * Used to get the all the show names currently in the db
-     * @return List of all show names, empty list of no show.
-     */
-    public List<String> getShowNames(){
-        SQLiteDatabase db = getReadableDatabase();
-        List<String> showList = new ArrayList<>();
-
-        Cursor cursor = db.query(SHOW_TABLE, new String[]{SHOW_NAME}, null, null, null, null, null);
-        while (cursor != null && cursor.moveToNext()) {
-            showList.add(cursor.getString(cursor.getColumnIndex(SHOW_NAME)));
-        }
-        return showList;
-    }
+//    /**
+//     * Used to get the all the show names currently in the db
+//     * @return List of all show names, empty list of no show.
+//     */
+//    public List<String> getShowNames(){
+//        SQLiteDatabase db = getReadableDatabase();
+//        List<String> showList = new ArrayList<>();
+//
+//        Cursor cursor = db.query(SHOW_TABLE, new String[]{SHOW_NAME}, null, null, null, null, null);
+//        while (cursor != null && cursor.moveToNext()) {
+//            showList.add(cursor.getString(cursor.getColumnIndex(SHOW_NAME)).toLowerCase());
+//        }
+//        return showList;
+//    }
 }
