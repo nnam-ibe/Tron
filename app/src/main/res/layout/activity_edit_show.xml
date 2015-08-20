@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="show.com.tron.EditShow">
+    tools:context="show.com.tron.EditShowActivity">
 
     <LinearLayout
         android:id="@+id/edit_show_top_Layout"

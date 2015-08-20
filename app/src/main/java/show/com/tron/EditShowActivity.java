@@ -14,7 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class EditShow extends AppCompatActivity {
+public class EditShowActivity extends AppCompatActivity {
 
     private EditText showName;
     private EditText epiSeason;

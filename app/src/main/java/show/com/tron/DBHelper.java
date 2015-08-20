@@ -60,7 +60,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Used to retrieve all the shows in the database.
-     *
      * @return ArrayList containing all shows.
      */
     public List<Show> getAllShows() {
@@ -77,12 +76,12 @@ public class DBHelper extends SQLiteOpenHelper {
                     cursor.getInt(cursor.getColumnIndex(SHOW_ID)));
             showList.add(show);
         }
+
         return showList;
     }
 
     /**
-     * Used to update show name or air day fields in the database
-     *
+     * Used to update all Show fields in the database
      * @param show the show with new fields to update
      */
     public boolean updateShow(Show show) {

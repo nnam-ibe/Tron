@@ -2,6 +2,7 @@ package show.com.tron;
 
 import android.app.Application;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TronApplication extends Application {
@@ -21,7 +22,9 @@ public class TronApplication extends Application {
     }
 
     public List<Show> getShowList() {
-        return dbHelper.getAllShows();
+        List<Show> list = dbHelper.getAllShows();
+        Collections.reverse(list);
+        return list;
     }
 
     public void updateShow(Show show) {

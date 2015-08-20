@@ -63,7 +63,6 @@ public class FragmentShow extends Fragment {
     public void addShow(final List<Show> newShows) {
         showList.clear();
         showList.addAll(newShows);
-        Collections.reverse(showList);
         showAdapter.notifyDataSetChanged();
     }
 }
