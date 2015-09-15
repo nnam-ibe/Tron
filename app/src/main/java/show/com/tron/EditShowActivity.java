@@ -22,19 +22,22 @@ public class EditShowActivity extends AppCompatActivity {
     private EditText currEpisode;
     private SwitchCompat aSwitch;
     private Spinner spinner;
-    private DBHelper dbHelper;
     private Show show;
     private TronApplication tron;
+    private static final String TAG = "EDIT SHOW";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_show);
         tron = (TronApplication) getApplicationContext();
-        dbHelper = new DBHelper(this);
+        DBHelper dbHelper = new DBHelper(this);
 
         int show_id = getIntent().getIntExtra("ID", 0);
         show = dbHelper.getShow(show_id);
+        if (show == null) {
+            return;
+        }
         showName = (EditText) findViewById(R.id.edit_show_name);
         epiSeason = (EditText) findViewById(R.id.edit_episode_season_editText);
         currSeason = (EditText) findViewById(R.id.edit_season_editText);
@@ -113,12 +116,8 @@ public class EditShowActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -149,8 +148,7 @@ public class EditShowActivity extends AppCompatActivity {
             show.setNoOfEpisodes(Integer.valueOf(epiSeason.getText().toString()));
             show.setSeason(Integer.valueOf(currSeason.getText().toString()));
             show.setEpisode(Integer.valueOf(currEpisode.getText().toString()));
-            DBHelper dbHelper = new DBHelper(this);
-            dbHelper.updateShow(show);
+            tron.updateShow(TAG, show);
             toast("Show was successfully updated");
             finish();
         }

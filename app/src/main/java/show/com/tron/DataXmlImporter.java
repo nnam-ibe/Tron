@@ -22,7 +22,7 @@ public class DataXmlImporter {
      * @return a list of Show objects contained in the document, empty list if none
      * @throws Exception throws exception if any weird thing happens, like out of format.
      */
-    public static List importer(File file)throws Exception {
+    public static List<Show> importer(File file)throws Exception {
         DocumentBuilderFactory factory =
                 DocumentBuilderFactory.newInstance();
 

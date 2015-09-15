@@ -2,6 +2,7 @@ package show.com.tron;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,7 @@ public class FragmentShow extends Fragment {
     private List<Show> showList = new ArrayList<>();
     private FloatingActionButton fab;
     private TronApplication tron;
+    private static final String TAG = "FRAGMENT SHOW";
 
 
     public FragmentShow() {
@@ -37,11 +39,11 @@ public class FragmentShow extends Fragment {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
 
-        showAdapter = new AdapterShow(showList, tron);
+        showAdapter = new AdapterShow(showList, tron, recyclerView, TAG);
         recyclerView.setAdapter(showAdapter);
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.setColorNormal(getResources().getColor(R.color.accent));
-        fab.setColorPressed(getResources().getColor(R.color.accent_pressed));
+        fab.setColorNormal(getResources().getColor(R.color.button));
+        fab.setColorPressed(getResources().getColor(R.color.buttonPressed));
         fab.setColorRipple(getResources().getColor(R.color.ripple));
         fab.attachToRecyclerView(recyclerView);
         return rootView;
@@ -56,13 +58,51 @@ public class FragmentShow extends Fragment {
                 addShow(list);
             }
         } catch (Exception e) {
-            Log.e("Fragment Show", "ERORRR!!! NOT SURE YET!!!");
+            Log.e(TAG, "Error thrown in OnResume");
+            e.printStackTrace();
         }
     }
 
     public void addShow(final List<Show> newShows) {
+//        Handler mainHandler = new Handler(tron.getMainLooper());
+//        Runnable myRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                showList.clear();
+//                showList.addAll(newShows);
+//                showAdapter.notifyDataSetChanged();
+//            }
+//        };
+//        mainHandler.post(myRunnable);
+
         showList.clear();
         showList.addAll(newShows);
-        showAdapter.notifyDataSetChanged();
+        publish();
+    }
+
+    public void removeShow(int id) {
+        Show remove = null;
+        for ( Show show : showList ) {
+            if (show.getId() == id) {
+                remove = show;
+                break;
+            }
+        }
+        if (remove != null) {
+            boolean result = showList.remove(remove);
+            Log.d(TAG, result + "");
+        }
+        publish();
+    }
+
+    private void publish(){
+        Handler mainHandler = new Handler(tron.getMainLooper());
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                showAdapter.notifyDataSetChanged();
+            }
+        };
+        mainHandler.post(myRunnable);
     }
 }

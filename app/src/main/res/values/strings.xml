@@ -2,7 +2,7 @@
     <string name="app_name">Tron</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Tron</string>
     <string name="card_show_S">S1E15</string>
     <string name="card_show_E">E</string>
     <string name="show_minus_string">&#8211;</string>
@@ -36,4 +36,6 @@
     <string name="action_export_shows_string">Export shows to file</string>
     <string name="action_import_shows_string">Import shows from file</string>
     <string name="searchable_hint">Search for a show</string>
+    <string name="show_dialog_delete_string">DELETE</string>
+    <string name="title_activity_a">AA</string>
 </resources>

@@ -27,20 +27,21 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private DBHelper db;
-    private FragmentShow fragmentShow;
     private ViewPager viewPager;
+    private TronApplication tron;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = new DBHelper(this);
-        fragmentShow = new FragmentShow();
+        tron = (TronApplication)getApplicationContext();
+        tron.setFragmentShow(new FragmentShow());
+        tron.setFragmentToday(new FragmentToday());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-//        final ViewPager viewPager = (ViewPager) findViewById(R.id.main_viewpager);
         viewPager = (ViewPager) findViewById(R.id.main_viewpager);
         setupViewPager(viewPager);
 
@@ -61,13 +62,14 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemActionExpand(MenuItem item) {
                 if(viewPager.getCurrentItem() != 0) {
                     viewPager.setCurrentItem(0);
+                    Log.e("Expanded stuff", Log.getStackTraceString(new Exception()));
                 }
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                fragmentShow.showAdapter.getFilter().filter("");
+                tron.getFragmentShow().showAdapter.getFilter().filter("");
                 return true;
             }
         });
@@ -78,13 +80,13 @@ public class MainActivity extends AppCompatActivity {
         SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String cs) {
-                fragmentShow.showAdapter.getFilter().filter(cs);
+                tron.getFragmentShow().showAdapter.getFilter().filter(cs);
                 return false;
             }
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                fragmentShow.showAdapter.getFilter().filter(query);
+                tron.getFragmentShow().showAdapter.getFilter().filter(query);
                 return false;
             }
         };
@@ -119,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
                             for (Show show : list) {
                                 db.insertShow(show);
                             }
-                            fragmentShow.onResume();
+                            tron.getFragmentShow().onResume();
+                            tron.getFragmentToday().onResume();
                             toast("Import successful!!");
                         } catch (Exception e) {
                             toast("Import failed, File format bad!!");
@@ -142,8 +145,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(fragmentShow, "SHOWS");
-        adapter.addFrag(new FragmentToday(), "TODAY");
+        adapter.addFrag(tron.getFragmentShow(), "SHOWS");
+        adapter.addFrag(tron.getFragmentToday(), "TODAY");
         viewPager.setAdapter(adapter);
     }
 

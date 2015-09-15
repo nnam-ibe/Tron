@@ -20,6 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String SHOW_NO_EPISODES = "no_episodes";
     public static final String SHOW_SEASON = "season";
     public static final String SHOW_EPISODE = "episode";
+//    public static final String SHOW_COLOR = "color";
     public static final String DATABASE_NAME = "App.db";
     private static final String SHOW_TABLE_CREATE = "create table "
             + SHOW_TABLE + "(" + SHOW_ID + " integer primary key autoincrement unique, "
@@ -136,18 +137,9 @@ public class DBHelper extends SQLiteOpenHelper {
         return showList;
     }
 
-//    /**
-//     * Used to get the all the show names currently in the db
-//     * @return List of all show names, empty list of no show.
-//     */
-//    public List<String> getShowNames(){
-//        SQLiteDatabase db = getReadableDatabase();
-//        List<String> showList = new ArrayList<>();
-//
-//        Cursor cursor = db.query(SHOW_TABLE, new String[]{SHOW_NAME}, null, null, null, null, null);
-//        while (cursor != null && cursor.moveToNext()) {
-//            showList.add(cursor.getString(cursor.getColumnIndex(SHOW_NAME)).toLowerCase());
-//        }
-//        return showList;
-//    }
+    public boolean deleteShow(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(SHOW_TABLE, SHOW_ID + "=" + id, null) > 0;
+    }
+
 }
