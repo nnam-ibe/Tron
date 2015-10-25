@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 public class EditShowActivity extends AppCompatActivity {
 
     private EditText showName;
@@ -148,6 +150,7 @@ public class EditShowActivity extends AppCompatActivity {
             show.setNoOfEpisodes(Integer.valueOf(epiSeason.getText().toString()));
             show.setSeason(Integer.valueOf(currSeason.getText().toString()));
             show.setEpisode(Integer.valueOf(currEpisode.getText().toString()));
+            show.setLastUpdated(Calendar.getInstance().getTime());
             tron.updateShow(TAG, show);
             toast("Show was successfully updated");
             finish();

@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 
 public class NewShowActivity extends AppCompatActivity {
 
@@ -87,7 +89,7 @@ public class NewShowActivity extends AppCompatActivity {
         } else {
             Show show = new Show(showName.getText().toString().trim(), Day.value(spinner.getSelectedItemPosition()),
                     Integer.valueOf(epiSeason.getText().toString()), Integer.valueOf(currSeason.getText().toString()),
-                    Integer.valueOf(currEpisode.getText().toString()));
+                    Integer.valueOf(currEpisode.getText().toString()), Calendar.getInstance().getTime());
             DBHelper dbHelper = new DBHelper(this);
             dbHelper.insertShow(show);
             toast("Show was successfully added");

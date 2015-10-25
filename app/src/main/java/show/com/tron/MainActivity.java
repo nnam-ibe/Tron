@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -62,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemActionExpand(MenuItem item) {
                 if(viewPager.getCurrentItem() != 0) {
                     viewPager.setCurrentItem(0);
-                    Log.e("Expanded stuff", Log.getStackTraceString(new Exception()));
                 }
                 return true;
             }
@@ -99,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
             case R.id.action_export_shows:
                 try {
                     DataXmlExporter dxe = new DataXmlExporter(db.getReadableDatabase());

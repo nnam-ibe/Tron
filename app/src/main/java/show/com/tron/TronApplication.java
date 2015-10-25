@@ -98,4 +98,14 @@ public class TronApplication extends Application {
         }
     }
 
+    public void deleteAllShows() {
+        dbHelper.deleteAllShow();
+        fragmentToday.onResume();
+        fragmentShow.onResume();
+    }
+
+    public int getNumberOfShow() {
+        return dbHelper.getNumberOfShow();
+    }
+
 }

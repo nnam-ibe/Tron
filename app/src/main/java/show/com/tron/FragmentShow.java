@@ -54,7 +54,7 @@ public class FragmentShow extends Fragment {
         super.onResume();
         try {
             List<Show> list = tron.getShowList();
-            if (list != null && !list.isEmpty()) {
+            if (list != null ) {
                 addShow(list);
             }
         } catch (Exception e) {
@@ -64,17 +64,6 @@ public class FragmentShow extends Fragment {
     }
 
     public void addShow(final List<Show> newShows) {
-//        Handler mainHandler = new Handler(tron.getMainLooper());
-//        Runnable myRunnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                showList.clear();
-//                showList.addAll(newShows);
-//                showAdapter.notifyDataSetChanged();
-//            }
-//        };
-//        mainHandler.post(myRunnable);
-
         showList.clear();
         showList.addAll(newShows);
         publish();

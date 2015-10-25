@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="">
-        <!--TODO-->
+    <PreferenceCategory android:title="Notifications">
+        <SwitchPreference
+            android:key="prefNotificationSwitch"
+            android:title="@string/prefNotification_title"
+            android:summary="@string/prefNotification_summary"
+            android:defaultValue="false"/>
+        <Preference
+            android:key="prefNotificationTime"
+            android:title="Time of day"
+            android:summary=""
+            android:dependency="prefNotificationSwitch"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="General">
+        <Preference
+            android:key="numberOfShows"
+            android:title="Total number of shows"
+            android:summary=""/>
+        <Preference
+            android:key="prefDelete"
+            android:title="Delete all shows"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="About">
+        <Preference
+            android:key="version"
+            android:title="Version"
+            android:summary="1.1"/>
     </PreferenceCategory>
 </PreferenceScreen>

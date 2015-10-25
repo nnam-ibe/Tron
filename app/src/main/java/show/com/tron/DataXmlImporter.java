@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -68,7 +69,7 @@ public class DataXmlImporter {
                         }
                     }
                 }
-                importList.add(new Show(name, weekday, noOfEpisodes, season, episode));
+                importList.add(new Show(name, weekday, noOfEpisodes, season, episode, Calendar.getInstance().getTime()));//TODO SAVE TIME
             }
         }
         return importList;

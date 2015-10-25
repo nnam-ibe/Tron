@@ -28,7 +28,7 @@
                 android:background="@color/colorPrimaryDark"
                 android:paddingLeft="8dp"
                 android:paddingTop="8dp"
-                android:text="Agents of S.H.I.E.L.D."
+                android:text="@string/sample_show_string"
                 android:textColor="#FFFFFF"
                 android:textSize="11pt"
                 android:visibility="visible" />
@@ -54,9 +54,20 @@
                 android:layout_below="@+id/show_S"
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
-                android:text="Tuesdays"
-                android:textColor="#000000"
+                android:text="@string/sample_day_string"
                 android:textSize="9pt" />
+
+            <TextView
+                android:id="@+id/show_last_updated_actual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/show_S"
+                android:layout_toEndOf="@+id/show_weekday"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:text="2 minutes ago"
+                android:textColor="#000000"
+                android:textSize="8pt" />
 
             <TextView
                 android:id="@+id/show_plus"

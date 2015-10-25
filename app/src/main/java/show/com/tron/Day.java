@@ -22,7 +22,7 @@ public enum Day {
             case 7:
                 return SUNDAY;
             default:
-                return null;
+                return OFFAIR;
         }
     }
 }

@@ -15,6 +15,7 @@ import android.widget.Filter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class AdapterShow extends RecyclerView.Adapter<AdapterShow.ShowViewHolder> {
@@ -52,6 +53,7 @@ public class AdapterShow extends RecyclerView.Adapter<AdapterShow.ShowViewHolder
         holder.line.setBackgroundColor(cardColor);
         holder.season.setText(ci.getSeasonEpisode());
         holder.weekday.setText(ci.getWeekDay().toString());
+        holder.lastUpdated.setText(ci.getLastUpdated());
         if (ci.getWeekDay() == Day.OFFAIR) {
             holder.weekday.setTextColor(Color.GRAY);
         } else {
@@ -62,6 +64,8 @@ public class AdapterShow extends RecyclerView.Adapter<AdapterShow.ShowViewHolder
             @Override
             public void onClick(View v) {
                 holder.season.setText(ci.nextEpisode());
+                ci.setLastUpdated(Calendar.getInstance().getTime());
+                holder.lastUpdated.setText(ci.getLastUpdated());
                 tron.updateShow(FRAGMENT_TAG, ci);
             }
         });
@@ -70,6 +74,8 @@ public class AdapterShow extends RecyclerView.Adapter<AdapterShow.ShowViewHolder
             @Override
             public void onClick(View v) {
                 holder.season.setText(ci.prevEpisode());
+                ci.setLastUpdated(Calendar.getInstance().getTime());
+                holder.lastUpdated.setText(ci.getLastUpdated());
                 tron.updateShow(FRAGMENT_TAG,ci);
             }
         });
@@ -176,6 +182,7 @@ public class AdapterShow extends RecyclerView.Adapter<AdapterShow.ShowViewHolder
         public TextView weekday;
         public TextView plus;
         public TextView minus;
+        public TextView lastUpdated;
         public View v;
         public View line;
 
@@ -188,6 +195,7 @@ public class AdapterShow extends RecyclerView.Adapter<AdapterShow.ShowViewHolder
             plus = (TextView) v.findViewById(R.id.show_plus);
             minus = (TextView) v.findViewById(R.id.show_minus);
             line = v.findViewById(R.id.feedLine);
+            lastUpdated = (TextView)v.findViewById(R.id.show_last_updated_actual);
         }
     }
 
@@ -217,7 +225,6 @@ public class AdapterShow extends RecyclerView.Adapter<AdapterShow.ShowViewHolder
                     sleep(3500);
                     if ( canRemoveData ) {
                         boolean result = tron.deleteShow(FRAGMENT_TAG,show.getId());
-                        Log.d("AdapterShow", result + " !!!!");
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();

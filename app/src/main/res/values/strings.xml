@@ -2,7 +2,7 @@
     <string name="app_name">Tron</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Tron</string>
+    <string name="action_settings">Settings</string>
     <string name="card_show_S">S1E15</string>
     <string name="card_show_E">E</string>
     <string name="show_minus_string">&#8211;</string>
@@ -38,4 +38,10 @@
     <string name="searchable_hint">Search for a show</string>
     <string name="show_dialog_delete_string">DELETE</string>
     <string name="title_activity_a">AA</string>
+    <string name="sample_day_string">Tuesdays</string>
+    <string name="sample_show_string">Agents of S.H.I.E.L.D.</string>
+    <string name="last_updated_string">Last Updated</string>
+    <string name="prefNotification_title">Daily notifications</string>
+    <string name="prefNotification_summary">Notify me daily of my shows for the day.</string>
+    <string name="notificaton_title">Airing Today</string>
 </resources>
