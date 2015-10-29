@@ -30,7 +30,7 @@ public class FragmentToday extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_show, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_today, container, false);
         tron = (TronApplication) getActivity().getApplicationContext();
         db = new DBHelper(getActivity());
         dayFormat = new SimpleDateFormat("EEEE");
