@@ -24,11 +24,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentCommunicator {
 
     private DBHelper db;
     private ViewPager viewPager;
-    private TronApplication tron;
+    private TronApplication tron;//TODO Don't Store Fragments in TRON!!
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,7 +183,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void toast(String msg){
+    private void toast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+    
+    @Override
+    public void updateFragmentToday() {
+        FragmentToday fragToday = (FragmentShow) getSupportFragmentManager().findFragmentById(R.id.fragment_today_frame);
+        //TODO Don't Call onResume
+    }
+    
+    @Override
+    public void updateFragmentShows() {
+        FragmentShow fragShow = (FragmentShow) getSupportFragmentManager().findFragmentById(R.id.fragment_show_frame);
+        //TODO Don't Call onResume
     }
 }
