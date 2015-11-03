@@ -14,14 +14,11 @@ import android.view.ViewGroup;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FragmentShow extends Fragment {
     public AdapterShow showAdapter;
-    private RecyclerView recyclerView;
     private List<Show> showList = new ArrayList<>();
-    private FloatingActionButton fab;
     private TronApplication tron;
     private static final String TAG = "FRAGMENT SHOW";
 
@@ -33,7 +30,7 @@ public class FragmentShow extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_show, container, false);
         tron = (TronApplication) getActivity().getApplicationContext();
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.show_recycler);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.show_recycler);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -41,7 +38,7 @@ public class FragmentShow extends Fragment {
 
         showAdapter = new AdapterShow(showList, tron, recyclerView, TAG);
         recyclerView.setAdapter(showAdapter);
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.setColorNormal(getResources().getColor(R.color.button));
         fab.setColorPressed(getResources().getColor(R.color.buttonPressed));
         fab.setColorRipple(getResources().getColor(R.color.ripple));

@@ -25,6 +25,6 @@
         <Preference
             android:key="version"
             android:title="Version"
-            android:summary="1.1"/>
+            android:summary="1.1.4"/>
     </PreferenceCategory>
 </PreferenceScreen>

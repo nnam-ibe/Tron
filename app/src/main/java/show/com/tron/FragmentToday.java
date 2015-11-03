@@ -20,21 +20,15 @@ import java.util.List;
 
 public class FragmentToday extends Fragment {
     private AdapterShow showAdapter;
-    private RecyclerView recyclerView;
     private List<Show> showList = new ArrayList<>();
-    private FloatingActionButton fab;
     private TronApplication tron;
-    private DBHelper db;
-    private SimpleDateFormat dayFormat;
     private static final String TAG = "FRAGMENT TODAY";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_show, container, false);
         tron = (TronApplication) getActivity().getApplicationContext();
-        db = new DBHelper(getActivity());
-        dayFormat = new SimpleDateFormat("EEEE");
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.show_recycler);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.show_recycler);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -42,7 +36,7 @@ public class FragmentToday extends Fragment {
 
         showAdapter = new AdapterShow(showList, (TronApplication) getActivity().getApplicationContext(), recyclerView, TAG);
         recyclerView.setAdapter(showAdapter);
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.setColorNormal(getResources().getColor(R.color.button));
         fab.setColorPressed(getResources().getColor(R.color.buttonPressed));
         fab.setColorRipple(getResources().getColor(R.color.ripple));
@@ -54,6 +48,10 @@ public class FragmentToday extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+        DBHelper db = new DBHelper(getActivity());
+
         String today = dayFormat.format(Calendar.getInstance().getTime()).toUpperCase();
         try {
             List<Show> list = db.getTodayShows(today);

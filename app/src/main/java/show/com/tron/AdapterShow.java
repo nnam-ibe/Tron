@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -224,7 +223,7 @@ public class AdapterShow extends RecyclerView.Adapter<AdapterShow.ShowViewHolder
                 try {
                     sleep(3500);
                     if ( canRemoveData ) {
-                        boolean result = tron.deleteShow(FRAGMENT_TAG,show.getId());
+                        tron.deleteShow(FRAGMENT_TAG,show.getId());
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
