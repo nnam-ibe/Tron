@@ -50,7 +50,7 @@ public class FragmentToday extends Fragment {
         super.onResume();
 
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
-        DBHelper db = new DBHelper(getActivity());
+        DBHelper db = DBHelper.getInstance(getActivity());
 
         String today = dayFormat.format(Calendar.getInstance().getTime()).toUpperCase();
         try {

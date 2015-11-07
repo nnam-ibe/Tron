@@ -25,13 +25,11 @@ public class NewShowActivity extends AppCompatActivity {
     private EditText currEpisode;
     private SwitchCompat aSwitch;
     private Spinner spinner;
-    private TronApplication tron;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_show);
-        tron = (TronApplication) getApplicationContext();
 
         showName = (EditText) findViewById(R.id.new_show_name);
         epiSeason = (EditText) findViewById(R.id.new_episode_season_editText);
@@ -90,7 +88,7 @@ public class NewShowActivity extends AppCompatActivity {
             Show show = new Show(showName.getText().toString().trim(), Day.value(spinner.getSelectedItemPosition()),
                     Integer.valueOf(epiSeason.getText().toString()), Integer.valueOf(currSeason.getText().toString()),
                     Integer.valueOf(currEpisode.getText().toString()), Calendar.getInstance().getTime());
-            DBHelper dbHelper = new DBHelper(this);
+            DBHelper dbHelper = DBHelper.getInstance(this);
             dbHelper.insertShow(show);
             toast("Show was successfully added");
             finish();
@@ -106,10 +104,7 @@ public class NewShowActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
     private void toast(String messgae) {

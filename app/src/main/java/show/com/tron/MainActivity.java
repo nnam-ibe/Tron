@@ -3,6 +3,7 @@ package show.com.tron;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.TabLayout;
@@ -13,14 +14,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        db = new DBHelper(this);
+        db = DBHelper.getInstance(this);
         tron = (TronApplication)getApplicationContext();
         tron.setFragmentShow(new FragmentShow());
         tron.setFragmentToday(new FragmentToday());
@@ -93,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void toast(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -103,35 +106,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.action_export_shows:
-                try {
-                    DataXmlExporter dxe = new DataXmlExporter(db.getReadableDatabase());
-                    toast("File exported to directory /storage/emulated/0/Tron/");
-                    dxe.export("Show_");
-                } catch (IOException e) {
-                    toast("Couldn't export file");
-                    Log.e("MainActivity", "Error trying to export file");
-                    e.printStackTrace();
-                }
+                new ExportFileTask().execute();
                 return true;
             case R.id.action_import_shows:
                 File mPath = new File(Environment.getExternalStorageDirectory() + "//DIR//");
                 FileDialog fileDialog = new FileDialog(this, mPath);
-                fileDialog.setFileEndsWith(".xml");
+                fileDialog.setFileEndsWith(".db");
                 fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
                     public void fileSelected(File file) {
-                        try {
-                            List<Show> list = DataXmlImporter.importer(file);
-                            for (Show show : list) {
-                                db.insertShow(show);
-                            }
-                            tron.getFragmentShow().onResume();
-                            tron.getFragmentToday().onResume();
-                            toast("Import successful!!");
-                        } catch (Exception e) {
-                            toast("Import failed, File format bad!!");
-                            Log.e("MainActivity", "Exception trying to import file");
-                            e.printStackTrace();
-                        }
+                        new ImportFileTask().execute(file);
                     }
                 });
                 fileDialog.showDialog();
@@ -183,7 +166,49 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void toast(String msg){
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    private class ImportFileTask extends AsyncTask<File, Void, Boolean> {
+
+        protected Boolean doInBackground(File... file) {
+            try {
+                db.importDB(file[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                tron.getFragmentShow().onResume();
+                tron.getFragmentToday().onResume();
+                toast("Import successful!");
+            } else {
+                toast("Failed to import");
+            }
+        }
     }
+
+    private class ExportFileTask extends AsyncTask<Void, Void, Boolean> {
+
+        protected Boolean doInBackground(Void... v) {
+            try {
+                db.exportDB();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if ( result ) {
+                toast("File exported to directory /storage/emulated/0/Tron/");
+            } else {
+                toast("Export Failes");
+            }
+
+        }
+    }
+
 }

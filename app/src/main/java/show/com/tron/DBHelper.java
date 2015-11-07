@@ -5,13 +5,22 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    private static DBHelper mInstance = null;
     public static final int DATABASE_VERSION = 3;
     public static final String SHOW_TABLE = "shows";
     public static final String SHOW_ID = "shows";
@@ -29,7 +38,14 @@ public class DBHelper extends SQLiteOpenHelper {
             + " integer not null, " + SHOW_LAST_UPDATED + " long default 0);";
 
 
-    public DBHelper(Context context) {
+    public static DBHelper getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new DBHelper(context.getApplicationContext());
+        }
+        return mInstance;
+    }
+
+    private DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -159,6 +175,59 @@ public class DBHelper extends SQLiteOpenHelper {
         int count= cursor.getInt(0);
         cursor.close();
         return count;
+    }
+
+    public void exportDB() throws IOException {
+        FileChannel src = null;
+        FileChannel dst = null;
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+
+            if (sd.canWrite()) {
+                String currentDBPath = "//data//show.com.tron//databases//" + DATABASE_NAME;
+                String backupDBPath = "Tron/Show_" +  new SimpleDateFormat("yy-MM-ddHHmmss").format(Calendar.getInstance().getTime()) + ".db";
+                File currentDB = new File(data, currentDBPath);
+                File backupDB = new File(sd, backupDBPath);
+
+                if (currentDB.exists()) {
+                    src = new FileInputStream(currentDB).getChannel();
+                    dst = new FileOutputStream(backupDB).getChannel();
+                    dst.transferFrom(src, 0, src.size());
+                    src.close();
+                    dst.close();
+                }
+            }
+        } catch (Exception e) {
+            Log.e("DBHelper", "Exproting DB Failed");
+            e.printStackTrace();
+        } finally {
+            if (src != null) src.close();
+            if (dst!=null) dst.close();
+        }
+    }
+
+    public void importDB(File file) throws IOException {
+        FileChannel src = null;
+        FileChannel dst = null;
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data  = Environment.getDataDirectory();
+
+            if (sd.canWrite()) {
+                String  currentDBPath= "//data//show.com.tron//databases//" + DATABASE_NAME;
+                File  backupDB= new File(data, currentDBPath);
+
+                src = new FileInputStream(file).getChannel();
+                dst = new FileOutputStream(backupDB).getChannel();
+                dst.transferFrom(src, 0, src.size());
+                src.close();
+                dst.close();
+            }
+        } catch (Exception e) {
+            if (src != null) src.close();
+            if (dst != null) dst.close();
+        }
     }
 
 }

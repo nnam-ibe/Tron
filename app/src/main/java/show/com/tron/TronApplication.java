@@ -22,7 +22,7 @@ public class TronApplication extends Application {
     public void onCreate() {
         super.onCreate();
         singleton = this;
-        dbHelper = new DBHelper(this);
+        dbHelper = DBHelper.getInstance(this);
     }
 
     public List<Show> getShowList() {

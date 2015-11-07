@@ -33,7 +33,7 @@ public class EditShowActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_show);
         tron = (TronApplication) getApplicationContext();
-        DBHelper dbHelper = new DBHelper(this);
+        DBHelper dbHelper = DBHelper.getInstance(this);
 
         int show_id = getIntent().getIntExtra("ID", 0);
         show = dbHelper.getShow(show_id);

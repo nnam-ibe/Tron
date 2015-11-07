@@ -76,22 +76,6 @@ public class FileDialog {
         fileListenerList.add(listener);
     }
 
-    public void removeFileListener(FileSelectedListener listener) {
-        fileListenerList.remove(listener);
-    }
-
-    public void setSelectDirectoryOption(boolean selectDirectoryOption) {
-        this.selectDirectoryOption = selectDirectoryOption;
-    }
-
-    public void addDirectoryListener(DirectorySelectedListener listener) {
-        dirListenerList.add(listener);
-    }
-
-    public void removeDirectoryListener(DirectorySelectedListener listener) {
-        dirListenerList.remove(listener);
-    }
-
     /**
      * Show file dialog
      */

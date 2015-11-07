@@ -28,7 +28,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             return;
         }
 
-        DBHelper db = new DBHelper(context);
+        DBHelper db = DBHelper.getInstance(context);
         String day = new SimpleDateFormat("EEEE").format(Calendar.getInstance().getTime()).toUpperCase();
         List<Show> list = db.getTodayShows( day );
 
